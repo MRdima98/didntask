@@ -9,23 +9,36 @@ const NO_ARGS: usize = 2;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
+    let mut writing = false;
     println!("Input args: {:?}:", args);
 
     if args.len() < NO_ARGS {
         println!(
-            "YOU SHALL PASS AN ARG!\n\
+            "\nYOU SHALL PASS AN ARG!\n\
             It shall be a directory or file?\n\
-            Consider passing the whole current directory: didntask .\n"
+            Consider passing the whole current directory: didntask .\n\n\
+            Here are the options:\n\
+            \t --write => This option writes the modified lines to the file"
         );
         return Ok(());
     }
 
     if !exists(args[1].clone())? {
         println!(
-            "WHAT GAMES ARE YOU PLAYING? THERE IS NO SUCH FILE!\n\
-            Check out the path and try again!\n"
+            "\nWHAT GAMES ARE YOU PLAYING? THERE IS NO SUCH FILE!\n\
+            Check out the path and try again!\n\n\
+            Here are the options:\n\
+            \t --write => This option writes the modified lines to the file"
         );
         return Ok(());
+    }
+
+    let path = args.get(1).expect("Guess there is no file?").clone();
+
+    for el in args.iter() {
+        if el == "--write" {
+            writing = true;
+        }
     }
 
     println!("Input args: {:?}:", args);
@@ -39,23 +52,30 @@ fn main() -> Result<(), Box<dyn Error>> {
     let re = Regex::new(r"\/\/.*")?;
     let cap = re.captures(data).unwrap();
     let mut clean_data = "".to_string();
-    for x in cap.iter() {
-        let tmp = x.unwrap();
-        print!("Match {}\n", tmp.as_str());
-        print!("Starting index {}\n", tmp.start());
-        print!("Ening index {}\n", tmp.end());
-        clean_data = data[0..tmp.start()].to_string() + &data[tmp.end()..data.len()];
+
+    let cap = cap.iter();
+
+    if cap.clone().count() != 0 {
+        print!("Here's the comments you wish to be removed!:\n\n")
     }
 
-    //let mut file = OpenOptions::new()
-    //    .write(true)
-    //    .truncate(true)
-    //    .open("test/testFiles/simpleComment.rs")?;
-    //
-    //file.write_all(clean_data.as_bytes())?;
+    for x in cap {
+        let tmp = x.unwrap();
+        print!("{}\n", tmp.as_str());
+        clean_data = data[0..tmp.start()].to_string() + &data[(tmp.end() + 1)..data.len()];
+    }
 
-    print!("Starting data: {:?}\n", data);
-    print!("Filtered data: {:?}\n", clean_data);
+    if writing {
+        writeToFile(path, clean_data)?;
+        print!("You comments has been purge succesffully!");
+    }
 
+    Ok(())
+}
+
+fn writeToFile(path: String, clean_data: String) -> Result<(), Box<dyn Error>> {
+    let mut file = OpenOptions::new().write(true).truncate(true).open(path)?;
+
+    file.write_all(clean_data.as_bytes())?;
     Ok(())
 }
