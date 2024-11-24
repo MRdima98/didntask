@@ -1,29 +1,18 @@
-use cli_input::parse_input;
-use core::{fmt, str};
+use core::str;
+use didntask::cli_input::parse_input;
 use regex::Regex;
 use std::env;
 use std::error::Error;
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
 
-#[derive(Debug)]
-enum InputError {
-    NoFile,
-}
-
-impl Error for InputError {}
-
-impl fmt::Display for InputError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Bad input!")
-    }
-}
+pub mod input;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
     let mut writing = false;
 
-    parse_input()?;
+    parse_input(args.clone())?;
 
     let path = args.get(1).expect("Guess there is no file?").clone();
 
@@ -68,39 +57,4 @@ fn write_to_file(path: String, clean_data: String) -> Result<(), Box<dyn Error>>
 
     file.write_all(clean_data.as_bytes())?;
     Ok(())
-}
-
-mod cli_input {
-    use std::env;
-    use std::error::Error;
-    use std::fs::exists;
-
-    use crate::InputError;
-    pub const NO_ARGS: usize = 2;
-
-    pub fn parse_input() -> Result<(), Box<dyn Error>> {
-        let args: Vec<String> = env::args().collect();
-
-        if args.len() < NO_ARGS {
-            println!(
-                "\nYOU SHALL PASS AN ARG!\n\
-            It shall be a directory or file?\n\
-            Consider passing the whole current directory: didntask .\n\n\
-            Here are the options:\n\
-            \t --write => This option writes the modified lines to the file"
-            );
-            return Err(Box::new(InputError::NoFile));
-        }
-
-        if !exists(args[1].clone())? {
-            println!(
-                "\nWHAT GAMES ARE YOU PLAYING? THERE IS NO SUCH FILE!\n\
-            Check out the path and try again!\n\n\
-            Here are the options:\n\
-            \t --write => This option writes the modified lines to the file"
-            );
-            return Ok(());
-        };
-        Ok(())
-    }
 }
