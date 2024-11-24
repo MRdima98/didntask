@@ -1,4 +1,4 @@
 fn main() {
-    // hihi
+    // test
     print!("Hello world!");
 }
