@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod validation {
-    use didntask::cli_input::{parse_input, parse_options};
+    use crate::cli_input::{parse_input, parse_options};
 
     #[test]
     fn should_err_less_that_two_args() {
