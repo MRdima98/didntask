@@ -1,5 +1,5 @@
 use core::str;
-use didntask::cli_input::parse_input;
+use didntask::cli_input::{parse_input, parse_options};
 use regex::Regex;
 use std::env;
 use std::error::Error;
@@ -10,17 +10,11 @@ pub mod input;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
-    let mut writing = false;
 
     parse_input(args.clone())?;
 
     let path = args.get(1).expect("Guess there is no file?").clone();
-
-    for el in args.iter() {
-        if el == "--write" {
-            writing = true;
-        }
-    }
+    let writing = parse_options(args);
 
     let mut file = File::open(path.clone())?;
     let mut data = vec![];

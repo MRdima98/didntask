@@ -1,6 +1,6 @@
 #[cfg(test)]
-mod tests {
-    use didntask::cli_input::parse_input;
+mod validation {
+    use didntask::cli_input::{parse_input, parse_options};
 
     #[test]
     fn should_err_less_that_two_args() {
@@ -29,5 +29,24 @@ mod tests {
             "../testFiles/simpleComment".to_string(),
         ];
         let _ = parse_input(args);
+    }
+
+    #[test]
+    fn should_be_true_with_write_option() {
+        let args = vec![
+            "gibberish".to_string(),
+            "../testFiles/simpleComment".to_string(),
+            "--write".to_string(),
+        ];
+        assert!(parse_options(args));
+    }
+
+    #[test]
+    fn should_be_false_without_write_option() {
+        let args = vec![
+            "gibberish".to_string(),
+            "../testFiles/simpleComment".to_string(),
+        ];
+        assert!(!parse_options(args));
     }
 }

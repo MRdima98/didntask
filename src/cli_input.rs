@@ -52,5 +52,15 @@ pub fn parse_input(args: Vec<String>) -> Result<(), Box<dyn Error>> {
     if !exists(args[1].clone())? {
         return Err(Box::new(InputError::NoFile));
     };
+
     Ok(())
+}
+
+pub fn parse_options(args: Vec<String>) -> bool {
+    for el in args.iter() {
+        if el == "--write" {
+            return true;
+        }
+    }
+    false
 }
