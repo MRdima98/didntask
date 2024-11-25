@@ -1,5 +1,5 @@
-use didntask::cli_input::{parse_input, parse_options};
-use didntask::file_handling::{parse_file, write_to_file};
+use didntask::file_handling::file_handling::{parse_file, write_to_file};
+use didntask::input::cli_input::{parse_input, parse_options};
 use std::env;
 use std::error::Error;
 
