@@ -10,4 +10,5 @@ I don't like comments. I shall purge comments. I did not ask for your help!
 [x] Expand to Python/Ruby
 [x] Expand to Go
 [x] Expand to SQL
-[ ] Add directory support
+[x] Add directory support
+[ ] Add recursive directory support
