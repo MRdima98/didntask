@@ -32,4 +32,60 @@ mod validation {
         let data = str::from_utf8(&data).expect("Can't parse the chars");
         assert_eq!(data, expected_data)
     }
+
+    #[test]
+    fn after_line() {
+        let path = "test_files/after_line.rs";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+        let path = "test_files/after_line_sol.rs";
+        let mut file = File::open(path).expect("Can't open the file.");
+        let mut data = vec![];
+        file.read_to_end(&mut data).expect("Can't read the file.");
+
+        let data = str::from_utf8(&data).expect("Can't parse the chars");
+        assert_eq!(data, expected_data)
+    }
+
+    #[test]
+    fn after_line_without_space() {
+        let path = "test_files/after_line_without_space.rs";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+        let path = "test_files/after_line_without_space_sol.rs";
+        let mut file = File::open(path).expect("Can't open the file.");
+        let mut data = vec![];
+        file.read_to_end(&mut data).expect("Can't read the file.");
+
+        let data = str::from_utf8(&data).expect("Can't parse the chars");
+        assert_eq!(data, expected_data)
+    }
+
+    #[test]
+    fn first_char() {
+        let path = "test_files/first_char.rs";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+        let path = "test_files/first_char_sol.rs";
+        let mut file = File::open(path).expect("Can't open the file.");
+        let mut data = vec![];
+        file.read_to_end(&mut data).expect("Can't read the file.");
+
+        let data = str::from_utf8(&data).expect("Can't parse the chars");
+        assert_eq!(data, expected_data)
+    }
+
+    #[test]
+    fn first_char_file() {
+        let path = "test_files/first_char_file.rs";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+        let path = "test_files/first_char_file_sol.rs";
+        let mut file = File::open(path).expect("Can't open the file.");
+        let mut data = vec![];
+        file.read_to_end(&mut data).expect("Can't read the file.");
+
+        let data = str::from_utf8(&data).expect("Can't parse the chars");
+        assert_eq!(data, expected_data)
+    }
 }
