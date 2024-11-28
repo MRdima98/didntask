@@ -10,10 +10,10 @@ pub fn parse_file<'a>(path: String, clean_data: &mut String) {
     file.read_to_end(&mut data).expect("Can't read the file.");
 
     let data = str::from_utf8(&data).expect("Can't parse the chars");
-    let extension = check_extension(&path.clone()).unwrap();
+    let Some(extension) = check_extension(&path.clone()) else {
+        return;
+    };
     let pattern = extension + ".*";
-    //let pattern = regex::escape(&pattern[..]);
-    //print!("PATTERN: {}", pattern);
     let re = Regex::new(&pattern[..]).expect("Down bad regex.");
     let Some(cap) = re.captures(data) else {
         return;

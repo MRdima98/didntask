@@ -132,6 +132,15 @@ mod validation {
     }
 
     #[test]
+    fn unsupported_extension() {
+        let path = "test_files/simple.txt";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+
+        assert_eq!("", expected_data)
+    }
+
+    #[test]
     fn rust_file() {
         let path = "test_files/simple_comment.rs";
         let expected = r"\/\/";
