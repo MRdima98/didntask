@@ -10,7 +10,11 @@ pub fn parse_file<'a>(path: String, clean_data: &mut String) {
     file.read_to_end(&mut data).expect("Can't read the file.");
 
     let data = str::from_utf8(&data).expect("Can't parse the chars");
-    let re = Regex::new(r"\/\/.*").expect("Down bad regex.");
+    let extension = check_extension(&path.clone()).unwrap();
+    let pattern = extension + ".*";
+    //let pattern = regex::escape(&pattern[..]);
+    //print!("PATTERN: {}", pattern);
+    let re = Regex::new(&pattern[..]).expect("Down bad regex.");
     let Some(cap) = re.captures(data) else {
         return;
     };
@@ -42,7 +46,7 @@ pub fn parse_file<'a>(path: String, clean_data: &mut String) {
                 newline_indicator = 1;
             }
 
-            if char != ' ' {
+            if char != ' ' && char != '\t' {
                 break;
             }
         }
@@ -56,4 +60,23 @@ pub fn write_to_file(path: String, clean_data: String) -> Result<(), Box<dyn Err
 
     file.write_all(clean_data.as_bytes())?;
     Ok(())
+}
+
+pub fn check_extension(path: &str) -> Option<String> {
+    let ruby = Regex::new(r"(\.rb|\.py)").expect("Down bad regex, go");
+    let rust = Regex::new(r"\.rs|\.go").expect("Down bad regex, rust");
+    let sql = Regex::new(r"\.sql").expect("Down bad regex, sql");
+
+    if ruby.captures(path).is_some() {
+        return Some("#".to_string());
+    };
+
+    if rust.captures(path).is_some() {
+        return Some(r"\/\/".to_string());
+    };
+
+    if sql.captures(path).is_some() {
+        return Some("--".to_string());
+    };
+    None
 }

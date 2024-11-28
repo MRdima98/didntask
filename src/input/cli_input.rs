@@ -5,6 +5,7 @@ use std::usize;
 
 pub const NO_ARGS: usize = 2;
 
+/// Custom error rust
 enum InputError {
     NoArgs,
     NoFile,
@@ -44,6 +45,14 @@ impl fmt::Display for InputError {
     }
 }
 
+/// Checks if input args are correct
+/// ```
+/// use didntask::input::cli_input::{parse_input, parse_options};
+/// let one_arg = vec!["one".to_string()];
+/// let two_arg = vec!["one".to_string(), "two".to_string()];
+/// parse_input(one_arg);
+/// parse_input(two_arg);
+/// ```
 pub fn parse_input(args: Vec<String>) -> Result<(), Box<dyn Error>> {
     if args.len() < NO_ARGS {
         return Err(Box::new(InputError::NoArgs));
@@ -56,6 +65,7 @@ pub fn parse_input(args: Vec<String>) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Returns the flag based on the options
 pub fn parse_options(args: Vec<String>) -> bool {
     for el in args.iter() {
         if el == "--write" {

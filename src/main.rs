@@ -21,3 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
+//
+//fn parse_directory() {
+//
+//}

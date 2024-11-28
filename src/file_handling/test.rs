@@ -88,4 +88,70 @@ mod validation {
         let data = str::from_utf8(&data).expect("Can't parse the chars");
         assert_eq!(data, expected_data)
     }
+
+    #[test]
+    fn simple_go() {
+        let path = "test_files/simple.go";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+        let path = "test_files/simple_sol.go";
+        let mut file = File::open(path).expect("Can't open the file.");
+        let mut data = vec![];
+        file.read_to_end(&mut data).expect("Can't read the file.");
+
+        let data = str::from_utf8(&data).expect("Can't parse the chars");
+        assert_eq!(data, expected_data)
+    }
+
+    #[test]
+    fn simple_sql() {
+        let path = "test_files/simple.sql";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+        let path = "test_files/simple_sol.sql";
+        let mut file = File::open(path).expect("Can't open the file.");
+        let mut data = vec![];
+        file.read_to_end(&mut data).expect("Can't read the file.");
+
+        let data = str::from_utf8(&data).expect("Can't parse the chars");
+        assert_eq!(data, expected_data)
+    }
+
+    #[test]
+    fn simple_py_ruby() {
+        let path = "test_files/simple.rb";
+        let mut expected_data = "".to_string();
+        parse_file(path.to_string(), &mut expected_data);
+        let path = "test_files/simple_sol.rb";
+        let mut file = File::open(path).expect("Can't open the file.");
+        let mut data = vec![];
+        file.read_to_end(&mut data).expect("Can't read the file.");
+
+        let data = str::from_utf8(&data).expect("Can't parse the chars");
+        assert_eq!(data, expected_data)
+    }
+
+    #[test]
+    fn rust_file() {
+        let path = "test_files/simple_comment.rs";
+        let expected = r"\/\/";
+        let actual = check_extension(path).unwrap();
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn go_python_ruby_file() {
+        let path = "test_files/simple.go";
+        let expected = r"\/\/";
+        let actual = check_extension(path).unwrap();
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn sql_file() {
+        let path = "test_files/simple.sql";
+        let expected = "--";
+        let actual = check_extension(path).unwrap();
+        assert_eq!(expected, actual);
+    }
 }
