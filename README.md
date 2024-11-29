@@ -23,13 +23,13 @@ do I skip over .gitingore files. This is both laziness and also I don't believe 
 lean much more by going so deep.
 
 ## TODO list
-[x] Read the comments
-[x] Remove the comments
-[x] Add CLI functionality
-[x] Add unit tests
-[x] Add some docs with active code
-[x] Expand to Python/Ruby
-[x] Expand to Go
-[x] Expand to SQL
-[x] Add directory support
-[x] Add recursive directory support
+- [x] Read the comments
+- [x] Remove the comments
+- [x] Add CLI functionality
+- [x] Add unit tests
+- [x] Add some docs with active code
+- [x] Expand to Python/Ruby
+- [x] Expand to Go
+- [x] Expand to SQL
+- [x] Add directory support
+- [x] Add recursive directory support
