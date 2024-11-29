@@ -9,10 +9,10 @@ pub fn parse_file<'a>(path: String, clean_data: &mut String) {
     let mut data = vec![];
     file.read_to_end(&mut data).expect("Can't read the file.");
 
-    let data = str::from_utf8(&data).expect("Can't parse the chars");
     let Some(extension) = check_extension(&path.clone()) else {
         return;
     };
+    let data = str::from_utf8(&data).expect("Can't parse the chars");
     let pattern = extension + ".*";
     let re = Regex::new(&pattern[..]).expect("Down bad regex.");
     let Some(cap) = re.captures(data) else {
@@ -21,7 +21,7 @@ pub fn parse_file<'a>(path: String, clean_data: &mut String) {
     let cap = cap.iter();
 
     if cap.clone().count() != 0 {
-        print!("Here's the comments you wish to be removed!:\n\n")
+        print!("Here's the comments you wish to be removed!:\n")
     }
 
     let mut indentation = 0;
@@ -30,7 +30,7 @@ pub fn parse_file<'a>(path: String, clean_data: &mut String) {
     let mut first_line_indicator = 1;
     for x in cap {
         let tmp = x.unwrap();
-        print!("{}\n", tmp.as_str());
+        print!("{}\n\n", tmp.as_str());
         indentation = tmp.start();
         loop {
             if indentation == 0 {

@@ -11,21 +11,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     parse_input(args.clone())?;
 
     let path = args.get(1).expect("Guess there is no file?").clone();
-    let mut directory: Vec<String> = vec![];
-    let tmp = path.clone();
-    let real_path = Path::new(&tmp);
-    if real_path.is_dir() {
-        for path in read_dir(real_path)? {
-            let path = path?;
-            let path = path.path();
-            let real_path = Path::new(&path);
-            if real_path.is_file() {
-                directory.push(path.to_str().unwrap().to_string());
-            }
-        }
-    } else {
-        directory.push(path.clone());
-    }
+    let directory: Vec<String> = vec![];
+    let directory = get_sub_directories(path, directory);
     parse_directory(directory, args);
 
     Ok(())
@@ -44,4 +31,38 @@ fn parse_directory(directory: Vec<String>, args: Vec<String>) {
             print!("You comments has been purge successffully!");
         }
     }
+}
+
+fn get_sub_directories(mut path: String, mut directory: Vec<String>) -> Vec<String> {
+    if path == "." {
+        path = env::current_dir()
+            .expect("Can't find current dir")
+            .as_path()
+            .to_str()
+            .unwrap()
+            .to_string();
+    }
+
+    let tmp = path.clone();
+    let real_path = Path::new(&tmp);
+
+    if !real_path.is_dir() {
+        directory.push(real_path.to_str().unwrap().to_string());
+        return directory;
+    }
+
+    for path in read_dir(real_path).expect("Can't read the dir") {
+        let path = path.expect("No path here");
+        let path = path.path();
+        let real_path = Path::new(&path);
+        if real_path.is_file() {
+            directory.push(path.to_str().unwrap().to_string());
+        } else {
+            directory.extend(get_sub_directories(
+                path.to_str().unwrap().to_string(),
+                vec![],
+            ));
+        }
+    }
+    directory
 }
